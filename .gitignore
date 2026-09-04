@@ -1,0 +1,12 @@
+# Dependencies & build output
+node_modules/
+dist/
+.next/
+coverage/
+
+# Local env files (each app has a committed .env.example)
+.env
+.env.local
+
+# Local tooling scratch
+.playwright-mcp/
