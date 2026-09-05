@@ -1,0 +1,171 @@
+// AskDocs database schema.
+//
+// Multi-tenancy rule: every row that belongs to a customer carries `workspaceId`,
+// and every query filters by it. The workspace IS the tenant.
+//
+// Models use camelCase in TypeScript and are mapped (@map / @@map) to snake_case
+// tables and columns, so raw SQL (used for vector search) stays idiomatic Postgres.
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            String         @id @default(uuid()) @db.Uuid
+  name          String
+  email         String         @unique // always stored lower-cased
+  passwordHash  String         @map("password_hash")
+  createdAt     DateTime       @default(now()) @map("created_at") @db.Timestamptz
+  workspaces    Workspace[]
+  conversations Conversation[]
+  usageEvents   UsageEvent[]
+
+  @@map("users")
+}
+
+model Workspace {
+  id            String         @id @default(uuid()) @db.Uuid
+  ownerId       String         @map("owner_id") @db.Uuid
+  name          String
+  createdAt     DateTime       @default(now()) @map("created_at") @db.Timestamptz
+  owner         User           @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  sources       Source[]
+  chunks        Chunk[]
+  conversations Conversation[]
+  usageEvents   UsageEvent[]
+
+  @@index([ownerId])
+  @@map("workspaces")
+}
+
+enum SourceType {
+  file
+  url
+
+  @@map("source_type")
+}
+
+enum SourceStatus {
+  pending
+  processing
+  ready
+  failed
+
+  @@map("source_status")
+}
+
+// A knowledge source: one uploaded file or one website crawl.
+model Source {
+  id           String       @id @default(uuid()) @db.Uuid
+  workspaceId  String       @map("workspace_id") @db.Uuid
+  type         SourceType
+  name         String
+  url          String? // url sources only
+  storageKey   String?      @map("storage_key") // file sources only: path inside UPLOAD_DIR
+  mimeType     String?      @map("mime_type")
+  sizeBytes    Int?         @map("size_bytes")
+  crawlOptions Json?        @map("crawl_options") // url sources only: { maxDepth, maxPages }
+  status       SourceStatus @default(pending)
+  error        String?
+  chunkCount   Int          @default(0) @map("chunk_count")
+  createdAt    DateTime     @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt    DateTime     @updatedAt @map("updated_at") @db.Timestamptz
+  workspace    Workspace    @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  chunks       Chunk[]
+
+  @@index([workspaceId, createdAt(sort: Desc)])
+  @@map("sources")
+}
+
+// One row per chunk of text, with its embedding.
+// workspaceId is duplicated here (it is also reachable via sourceId) on purpose:
+// the similarity search can filter by tenant without a JOIN.
+//
+// Prisma has no native pgvector type, so `embedding` is `Unsupported`: Prisma Client
+// cannot read or write it. Inserts and similarity search use raw SQL
+// (see src/repositories/chunk.repository.ts). The HNSW index on it is added by hand
+// in the migration SQL because Prisma cannot express it either.
+model Chunk {
+  id          String                       @id @default(uuid()) @db.Uuid
+  workspaceId String                       @map("workspace_id") @db.Uuid
+  sourceId    String                       @map("source_id") @db.Uuid
+  chunkIndex  Int                          @map("chunk_index")
+  content     String
+  metadata    Json                         @default("{}") // { page, section, url, title }
+  tokenCount  Int                          @map("token_count")
+  embedding   Unsupported("vector(1536)") // text-embedding-3-small size
+  createdAt   DateTime                     @default(now()) @map("created_at") @db.Timestamptz
+  workspace   Workspace                    @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  source      Source                       @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId])
+  @@index([sourceId])
+  @@map("chunks")
+}
+
+model Conversation {
+  id          String    @id @default(uuid()) @db.Uuid
+  workspaceId String    @map("workspace_id") @db.Uuid
+  userId      String    @map("user_id") @db.Uuid
+  title       String
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages    Message[]
+
+  @@index([workspaceId, userId, updatedAt(sort: Desc)])
+  @@map("conversations")
+}
+
+enum MessageRole {
+  user
+  assistant
+
+  @@map("message_role")
+}
+
+model Message {
+  id             String       @id @default(uuid()) @db.Uuid
+  conversationId String       @map("conversation_id") @db.Uuid
+  role           MessageRole
+  content        String
+  citations      Json         @default("[]")
+  createdAt      DateTime     @default(now()) @map("created_at") @db.Timestamptz
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@index([conversationId, createdAt])
+  @@map("messages")
+}
+
+enum UsageKind {
+  chat
+  embedding
+  rewrite
+
+  @@map("usage_kind")
+}
+
+// Every LLM / embedding call is recorded so we can show usage and enforce quotas.
+model UsageEvent {
+  id               BigInt    @id @default(autoincrement())
+  workspaceId      String    @map("workspace_id") @db.Uuid
+  userId           String?   @map("user_id") @db.Uuid
+  kind             UsageKind
+  model            String
+  promptTokens     Int       @default(0) @map("prompt_tokens")
+  completionTokens Int       @default(0) @map("completion_tokens")
+  totalTokens      Int       @default(0) @map("total_tokens")
+  createdAt        DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  workspace        Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user             User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([workspaceId, createdAt])
+  @@map("usage_events")
+}
