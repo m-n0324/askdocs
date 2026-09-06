@@ -1,0 +1,10 @@
+{
+    // Vitest runs tests as ES modules (top-level await, dynamic import without extensions),
+    // so tests are type-checked with bundler-style resolution instead of Node's CommonJS rules.
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "module": "ESNext",
+        "moduleResolution": "Bundler"
+    },
+    "include": ["./**/*.ts", "../vitest.config.ts", "../src/types/express.d.ts"]
+}
