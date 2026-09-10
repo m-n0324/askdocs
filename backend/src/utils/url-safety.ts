@@ -31,11 +31,12 @@ for (const [network, prefix] of [
 ] as const) {
     blockList.addSubnet(network, prefix, "ipv4")
 }
+// Note: do NOT add the IPv4-mapped range ::ffff:0:0/96 here. Node's BlockList would then match
+// every plain IPv4 address. Mapped addresses are unwrapped to IPv4 in `isPrivateAddress` instead.
 for (const [network, prefix] of [
     ["::", 128], // unspecified
     ["::1", 128], // loopback
     ["::", 96], // IPv4-compatible (deprecated)
-    ["::ffff:0:0", 96], // IPv4-mapped, e.g. ::ffff:127.0.0.1
     ["64:ff9b::", 96], // NAT64: can be translated to ANY IPv4, including private ones
     ["2002::", 16], // 6to4: embeds an IPv4 address
     ["fec0::", 10], // site-local (deprecated)
@@ -46,10 +47,24 @@ for (const [network, prefix] of [
     blockList.addSubnet(network, prefix, "ipv6")
 }
 
+/** "::ffff:127.0.0.1" and "::ffff:7f00:1" both mean IPv4 127.0.0.1. Returns null for other IPv6. */
+function unwrapIpv4Mapped(address: string): string | null {
+    const dotted = address.match(/^::ffff:(\d+\.\d+\.\d+\.\d+)$/i)
+    if (dotted) return dotted[1]
+    const hex = address.match(/^::ffff:([0-9a-f]{1,4}):([0-9a-f]{1,4})$/i)
+    if (!hex) return null
+    const high = parseInt(hex[1], 16)
+    const low = parseInt(hex[2], 16)
+    return [high >> 8, high & 0xff, low >> 8, low & 0xff].join(".")
+}
+
 export function isPrivateAddress(address: string): boolean {
     const family = net.isIP(address)
     if (family === 4) return blockList.check(address, "ipv4")
-    if (family === 6) return blockList.check(address, "ipv6")
+    if (family === 6) {
+        const mapped = unwrapIpv4Mapped(address)
+        return mapped ? blockList.check(mapped, "ipv4") : blockList.check(address, "ipv6")
+    }
     return true // not an IP at all: refuse rather than guess
 }
 
