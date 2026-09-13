@@ -13,6 +13,7 @@ import {
     listSourcesHandler,
     uploadSourceHandler,
 } from "../controllers/source.controller"
+import { getUsageHandler } from "../controllers/usage.controller"
 import {
     createWorkspaceHandler,
     deleteWorkspaceHandler,
@@ -42,6 +43,8 @@ scoped.delete("/conversations/:conversationId", deleteConversationHandler)
 
 scoped.post("/chat", chatLimiter, chatHandler)
 scoped.post("/chat/stream", chatLimiter, streamChatHandler)
+
+scoped.get("/usage", getUsageHandler)
 
 const workspaceRouter = Router()
 
