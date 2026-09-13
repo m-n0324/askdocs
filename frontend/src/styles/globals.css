@@ -1,1 +1,110 @@
 @import "tailwindcss";
+
+/*
+ * Design tokens. Tailwind v4 turns each one into utilities:
+ * --color-ink -> text-ink / bg-ink / border-ink, --font-display -> font-display, ...
+ * Direction: a "research desk" — warm paper, near-black ink, one vermilion accent.
+ */
+@theme {
+  /* Paper & ink */
+  --color-paper: oklch(97.4% 0.011 84);
+  --color-paper-raised: oklch(99% 0.005 84);
+  --color-paper-sunk: oklch(94.8% 0.014 82);
+  --color-ink: oklch(21% 0.012 60);
+  --color-ink-muted: oklch(43% 0.014 60);
+  --color-ink-faint: oklch(53% 0.012 65);
+  --color-rule: oklch(87.5% 0.016 80);
+  --color-rule-strong: oklch(75% 0.02 75);
+
+  /* The single accent: citations, primary actions, focus rings */
+  --color-accent: oklch(59% 0.2 39);
+  --color-accent-strong: oklch(50% 0.18 37);
+  --color-accent-deep: oklch(44% 0.16 35);
+  --color-accent-wash: oklch(94.5% 0.035 45);
+
+  /* Status colors are deliberately muted so the accent keeps its meaning */
+  --color-ready: oklch(48% 0.07 155);
+  --color-ready-wash: oklch(94.5% 0.022 155);
+  --color-pending: oklch(52% 0.075 75);
+  --color-pending-wash: oklch(94.5% 0.03 85);
+  --color-failed: oklch(47% 0.1 18);
+  --color-failed-wash: oklch(95% 0.022 18);
+
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --animate-caret: caret 1.05s steps(1, end) infinite;
+  --animate-breathe: breathe 1.6s ease-in-out infinite;
+  --animate-rise: rise 360ms var(--ease-out-quint) both;
+  --animate-slide-in: slide-in 280ms var(--ease-out-quint) both;
+  --animate-fade-in: fade-in 200ms ease-out both;
+
+  @keyframes caret {
+    0%, 55% { opacity: 1; }
+    56%, 100% { opacity: 0; }
+  }
+  @keyframes breathe {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+  }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes slide-in {
+    from { opacity: 0; transform: translateX(24px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+}
+
+/* Font variables are created by next/font on a wrapper element, so they must be `inline`. */
+@theme inline {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-display: var(--font-instrument-serif), ui-serif, Georgia, serif;
+}
+
+@layer base {
+  html {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    color-scheme: light;
+  }
+
+  body {
+    /* A faint paper grain; pure decoration, so it's a background image. */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.28 0 0 0 0 0.2 0 0 0 0.045 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  ::selection {
+    background-color: var(--color-accent-wash);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]) {
+    cursor: pointer;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
