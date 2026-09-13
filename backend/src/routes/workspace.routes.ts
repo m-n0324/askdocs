@@ -1,4 +1,10 @@
 import { Router } from "express"
+import { chatHandler, streamChatHandler } from "../controllers/chat.controller"
+import {
+    deleteConversationHandler,
+    getConversationHandler,
+    listConversationsHandler,
+} from "../controllers/conversation.controller"
 import {
     addUrlSourceHandler,
     deleteSourceHandler,
@@ -13,7 +19,7 @@ import {
     listWorkspacesHandler,
 } from "../controllers/workspace.controller"
 import { requireAuth } from "../middlewares/auth"
-import { apiLimiter, uploadLimiter } from "../middlewares/rateLimit"
+import { apiLimiter, chatLimiter, uploadLimiter } from "../middlewares/rateLimit"
 import { uploadSingleFile } from "../middlewares/upload"
 import { requireWorkspace } from "../middlewares/workspace"
 
@@ -29,6 +35,13 @@ scoped.post("/sources/url", uploadLimiter, addUrlSourceHandler)
 scoped.get("/sources/:sourceId", getSourceHandler)
 scoped.get("/sources/:sourceId/file", getSourceFileHandler)
 scoped.delete("/sources/:sourceId", deleteSourceHandler)
+
+scoped.get("/conversations", listConversationsHandler)
+scoped.get("/conversations/:conversationId", getConversationHandler)
+scoped.delete("/conversations/:conversationId", deleteConversationHandler)
+
+scoped.post("/chat", chatLimiter, chatHandler)
+scoped.post("/chat/stream", chatLimiter, streamChatHandler)
 
 const workspaceRouter = Router()
 
