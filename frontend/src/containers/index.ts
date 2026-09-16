@@ -1,4 +1,6 @@
 export * from "./AuthGuard";
+export * from "./ChatContainer";
+export * from "./ChatSessionContainer";
 export * from "./FullPageLoading";
 export * from "./GuestGuard";
 export * from "./HomeRedirectContainer";

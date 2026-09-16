@@ -1,4 +1,5 @@
 export * from "./chatEvents";
+export * from "./citations";
 export * from "./classNames";
 export * from "./errors";
 export * from "./files";

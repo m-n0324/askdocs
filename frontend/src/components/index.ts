@@ -1,4 +1,5 @@
 export * from "./auth";
+export * from "./chat";
 export * from "./NotFound";
 export * from "./shell";
 export * from "./sources";
