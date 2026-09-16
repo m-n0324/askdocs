@@ -1,6 +1,7 @@
 export * from "./useAuth";
 export * from "./useChatSessionKey";
 export * from "./useChatStream";
+export * from "./useConversations";
 export * from "./useOpenSource";
 export * from "./useSessionReady";
 export * from "./useSources";

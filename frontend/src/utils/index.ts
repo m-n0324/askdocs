@@ -1,6 +1,7 @@
 export * from "./chatEvents";
 export * from "./citations";
 export * from "./classNames";
+export * from "./conversationCache";
 export * from "./errors";
 export * from "./files";
 export * from "./format";
