@@ -5,4 +5,5 @@ export * from "./useConversations";
 export * from "./useOpenSource";
 export * from "./useSessionReady";
 export * from "./useSources";
+export * from "./useUsageQuery";
 export * from "./useWorkspaces";

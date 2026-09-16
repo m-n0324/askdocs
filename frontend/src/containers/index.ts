@@ -7,6 +7,7 @@ export * from "./HomeRedirectContainer";
 export * from "./LoginContainer";
 export * from "./SignupContainer";
 export * from "./SourcesContainer";
+export * from "./UsageContainer";
 export * from "./WorkspaceLayoutContainer";
 export * from "./WorkspacesContainer";
 export * from "./WorkspaceIndexRedirect";
