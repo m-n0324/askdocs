@@ -1,6 +1,7 @@
 import { env } from "../config/env"
 import { logger } from "../lib/logger"
 import { FakeProvider } from "./fake.provider"
+import { GeminiProvider } from "./gemini.provider"
 import { OpenAiProvider } from "./openai.provider"
 import type { LlmProvider } from "./provider"
 
@@ -14,6 +15,13 @@ function createProvider(): LlmProvider {
                 apiKey: env.OPENAI_API_KEY ?? "",
                 chatModel: env.OPENAI_CHAT_MODEL,
                 embeddingModel: env.OPENAI_EMBEDDING_MODEL,
+                timeoutMs: env.LLM_TIMEOUT_MS,
+            })
+        case "gemini":
+            return new GeminiProvider({
+                apiKey: env.GEMINI_API_KEY ?? "",
+                chatModel: env.GEMINI_CHAT_MODEL,
+                embeddingModel: env.GEMINI_EMBEDDING_MODEL,
                 timeoutMs: env.LLM_TIMEOUT_MS,
             })
         case "fake":

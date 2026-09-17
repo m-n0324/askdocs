@@ -22,11 +22,15 @@ const envSchema = z
         JWT_SECRET: z.string().min(32, "JWT_SECRET must be at least 32 characters"),
         JWT_EXPIRES_IN: z.string().default("7d"),
 
-        // "fake" gives offline canned answers, for tests and UI work without an API key
-        LLM_PROVIDER: z.enum(["openai", "fake"]).default("openai"),
+        // "gemini" has a free tier (keys at aistudio.google.com); "fake" is offline canned answers,
+        // for tests
+        LLM_PROVIDER: z.enum(["openai", "gemini", "fake"]).default("openai"),
         OPENAI_API_KEY: z.string().optional(),
         OPENAI_CHAT_MODEL: z.string().default("gpt-4.1-mini"),
         OPENAI_EMBEDDING_MODEL: z.string().default("text-embedding-3-small"),
+        GEMINI_API_KEY: z.string().optional(),
+        GEMINI_CHAT_MODEL: z.string().default("gemini-2.5-flash"),
+        GEMINI_EMBEDDING_MODEL: z.string().default("gemini-embedding-001"),
         // A hung LLM request would otherwise hold an SSE connection open for minutes
         LLM_TIMEOUT_MS: z.coerce.number().int().positive().default(60_000),
 
@@ -61,6 +65,13 @@ const envSchema = z
                 code: "custom",
                 path: ["OPENAI_API_KEY"],
                 message: "OPENAI_API_KEY is required when LLM_PROVIDER=openai",
+            })
+        }
+        if (value.LLM_PROVIDER === "gemini" && !value.GEMINI_API_KEY) {
+            ctx.addIssue({
+                code: "custom",
+                path: ["GEMINI_API_KEY"],
+                message: "GEMINI_API_KEY is required when LLM_PROVIDER=gemini",
             })
         }
         if (value.CHUNK_OVERLAP >= value.CHUNK_SIZE) {
