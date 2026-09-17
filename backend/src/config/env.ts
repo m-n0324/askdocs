@@ -29,7 +29,10 @@ const envSchema = z
         OPENAI_CHAT_MODEL: z.string().default("gpt-4.1-mini"),
         OPENAI_EMBEDDING_MODEL: z.string().default("text-embedding-3-small"),
         GEMINI_API_KEY: z.string().optional(),
-        GEMINI_CHAT_MODEL: z.string().default("gemini-2.5-flash"),
+        // Flash-Lite answers in ~1s and streams. Full "Flash" models think silently first
+        // (10-30s, ~8x the tokens) and have a much smaller free quota. The "-latest" alias follows
+        // Google's current model, so retiring an old version doesn't break the app.
+        GEMINI_CHAT_MODEL: z.string().default("gemini-flash-lite-latest"),
         GEMINI_EMBEDDING_MODEL: z.string().default("gemini-embedding-001"),
         // A hung LLM request would otherwise hold an SSE connection open for minutes
         LLM_TIMEOUT_MS: z.coerce.number().int().positive().default(60_000),
