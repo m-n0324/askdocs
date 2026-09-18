@@ -22,9 +22,9 @@ const envSchema = z
         JWT_SECRET: z.string().min(32, "JWT_SECRET must be at least 32 characters"),
         JWT_EXPIRES_IN: z.string().default("7d"),
 
-        // "gemini" has a free tier (keys at aistudio.google.com); "fake" is offline canned answers,
-        // for tests
-        LLM_PROVIDER: z.enum(["openai", "gemini", "fake"]).default("openai"),
+        // "gemini" has a free tier (keys at aistudio.google.com); "ollama" runs models on your own
+        // machine (free, private, no key); "fake" is offline canned answers, for tests
+        LLM_PROVIDER: z.enum(["openai", "gemini", "ollama", "fake"]).default("openai"),
         OPENAI_API_KEY: z.string().optional(),
         OPENAI_CHAT_MODEL: z.string().default("gpt-4.1-mini"),
         OPENAI_EMBEDDING_MODEL: z.string().default("text-embedding-3-small"),
@@ -34,6 +34,11 @@ const envSchema = z
         // Google's current model, so retiring an old version doesn't break the app.
         GEMINI_CHAT_MODEL: z.string().default("gemini-flash-lite-latest"),
         GEMINI_EMBEDDING_MODEL: z.string().default("gemini-embedding-001"),
+        OLLAMA_BASE_URL: z.string().url().default("http://localhost:11434"),
+        OLLAMA_CHAT_MODEL: z.string().default("qwen2.5:3b"),
+        OLLAMA_EMBEDDING_MODEL: z.string().default("nomic-embed-text"),
+        // Ollama's default context is small and silently cuts long prompts; ours can be ~4k tokens
+        OLLAMA_CONTEXT_WINDOW: z.coerce.number().int().positive().default(8192),
         // A hung LLM request would otherwise hold an SSE connection open for minutes
         LLM_TIMEOUT_MS: z.coerce.number().int().positive().default(60_000),
 
