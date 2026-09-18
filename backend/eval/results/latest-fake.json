@@ -1,0 +1,170 @@
+{
+    "ranAt": "2026-09-18T13:34:32.000Z",
+    "config": {
+        "provider": "fake",
+        "embeddingModel": "fake-embedding",
+        "chunkSize": 1000,
+        "chunkOverlap": 150,
+        "candidates": 20,
+        "topK": 5,
+        "mmrLambda": 0.7,
+        "minRelevanceScore": 0.3,
+        "chunks": 15
+    },
+    "summary": {
+        "questions": 21,
+        "hitRateAt1": 0.667,
+        "hitRateAtK": 0.667,
+        "mrr": 0.667,
+        "noAnswerAccuracy": 1
+    },
+    "results": [
+        {
+            "question": "How many vacation days do full-time employees get per year?",
+            "expected": "employee-handbook.pdf p.2",
+            "rank": 1,
+            "retrieved": ["employee-handbook.pdf p.2"],
+            "topScore": 0.544
+        },
+        {
+            "question": "Can I carry unused vacation days over to next year?",
+            "expected": "employee-handbook.pdf p.2",
+            "rank": 1,
+            "retrieved": ["employee-handbook.pdf p.2"],
+            "topScore": 0.514
+        },
+        {
+            "question": "When do I need a doctor's note when I'm sick?",
+            "expected": "employee-handbook.pdf p.3",
+            "rank": null,
+            "retrieved": [],
+            "topScore": 0.279
+        },
+        {
+            "question": "How long can I work from another country without approval?",
+            "expected": "employee-handbook.pdf p.4",
+            "rank": 1,
+            "retrieved": ["employee-handbook.pdf p.4"],
+            "topScore": 0.516
+        },
+        {
+            "question": "What is the budget for setting up my home office?",
+            "expected": "employee-handbook.pdf p.5",
+            "rank": null,
+            "retrieved": [],
+            "topScore": 0.279
+        },
+        {
+            "question": "What are the core working hours?",
+            "expected": "employee-handbook.pdf p.1",
+            "rank": 1,
+            "retrieved": ["employee-handbook.pdf p.1"],
+            "topScore": 0.415
+        },
+        {
+            "question": "Am I allowed to fly business class?",
+            "expected": "expense-policy.pdf p.2",
+            "rank": null,
+            "retrieved": [],
+            "topScore": 0.295
+        },
+        {
+            "question": "What is the maximum hotel cost per night in London?",
+            "expected": "expense-policy.pdf p.2",
+            "rank": 1,
+            "retrieved": ["expense-policy.pdf p.2"],
+            "topScore": 0.301
+        },
+        {
+            "question": "How much is the daily meal allowance when travelling?",
+            "expected": "expense-policy.pdf p.3",
+            "rank": 1,
+            "retrieved": ["expense-policy.pdf p.3"],
+            "topScore": 0.395
+        },
+        {
+            "question": "How much money do I get each year for courses and books?",
+            "expected": "expense-policy.pdf p.4",
+            "rank": null,
+            "retrieved": [],
+            "topScore": 0.153
+        },
+        {
+            "question": "Within how many days must expenses be submitted?",
+            "expected": "expense-policy.pdf p.1",
+            "rank": 1,
+            "retrieved": ["expense-policy.pdf p.1"],
+            "topScore": 0.327
+        },
+        {
+            "question": "Is SMS two-factor authentication allowed?",
+            "expected": "security-guidelines.docx p.1",
+            "rank": 1,
+            "retrieved": ["security-guidelines.docx p.1"],
+            "topScore": 0.58
+        },
+        {
+            "question": "Where is customer data allowed to be stored?",
+            "expected": "security-guidelines.docx p.2",
+            "rank": 1,
+            "retrieved": ["security-guidelines.docx p.2"],
+            "topScore": 0.483
+        },
+        {
+            "question": "What should I do if my laptop is stolen?",
+            "expected": "security-guidelines.docx p.3",
+            "rank": null,
+            "retrieved": [],
+            "topScore": 0.107
+        },
+        {
+            "question": "How much does the Growth plan cost?",
+            "expected": "product-faq.pdf p.2",
+            "rank": null,
+            "retrieved": [],
+            "topScore": 0.27
+        },
+        {
+            "question": "Which plan includes single sign-on?",
+            "expected": "product-faq.pdf p.2",
+            "rank": 1,
+            "retrieved": ["product-faq.pdf p.2"],
+            "topScore": 0.362
+        },
+        {
+            "question": "Which e-commerce platforms does Nimbus Insights integrate with?",
+            "expected": "product-faq.pdf p.1",
+            "rank": 1,
+            "retrieved": ["product-faq.pdf p.1"],
+            "topScore": 0.393
+        },
+        {
+            "question": "How long is the free trial and do I need a credit card?",
+            "expected": "product-faq.pdf p.3",
+            "rank": 1,
+            "retrieved": ["product-faq.pdf p.3"],
+            "topScore": 0.379
+        },
+        {
+            "question": "What is the parental leave policy?",
+            "expected": "(no answer)",
+            "rank": null,
+            "retrieved": [],
+            "topScore": 0.115
+        },
+        {
+            "question": "Who won the 2022 football World Cup?",
+            "expected": "(no answer)",
+            "rank": null,
+            "retrieved": [],
+            "topScore": 0.067
+        },
+        {
+            "question": "What programming language is the backend written in?",
+            "expected": "(no answer)",
+            "rank": null,
+            "retrieved": [],
+            "topScore": 0.224
+        }
+    ]
+}

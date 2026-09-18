@@ -1,0 +1,139 @@
+{
+    "description": "A small, fictional knowledge base for the company 'Nimbus Analytics', with questions whose correct source page is known. Used by `pnpm eval` to measure retrieval quality.",
+    "documents": [
+        {
+            "name": "employee-handbook.pdf",
+            "pages": [
+                "Welcome to Nimbus Analytics. This handbook explains how we work. Our core hours are 11:00 to 16:00 in your local time zone; outside core hours you may organise your day freely. Every new hire is assigned an onboarding buddy for their first 60 days.",
+                "Paid time off. Full-time employees receive 24 days of paid vacation per calendar year, plus public holidays of their country of residence. Unused vacation days, up to a maximum of 5, can be carried over to the next year and must be used before March 31. Vacation requests should be submitted in the HR portal at least two weeks in advance.",
+                "Sick leave. If you are ill, notify your manager before 10:00 on the first day of absence. For absences longer than three consecutive working days a doctor's certificate is required. Sick days do not reduce your vacation balance.",
+                "Remote work. Nimbus is remote-first. Employees may work from any country where Nimbus has a legal entity for up to 90 days per year without prior approval. Working from other countries requires written approval from People Operations because of tax and visa rules.",
+                "Equipment. Every employee receives a laptop of their choice (MacBook Pro or ThinkPad X1) and a one-time home office budget of 1,000 EUR for a desk, chair, and monitor. Equipment remains company property and must be returned when you leave."
+            ]
+        },
+        {
+            "name": "expense-policy.pdf",
+            "pages": [
+                "Expense policy overview. Business expenses are reimbursed when they are necessary, reasonable, and supported by a receipt. Submit expenses in the Finance app within 30 days of the purchase. Reimbursements are paid with the next monthly salary.",
+                "Travel. Book flights through the company travel tool. Economy class is the default; business class is allowed only for flights longer than 8 hours. Hotels are reimbursed up to 180 EUR per night in most cities and up to 250 EUR per night in London, New York, and Zurich.",
+                "Meals and per diem. While travelling for work you receive a daily meal allowance of 45 EUR, no receipts needed. Alcohol is never reimbursed. Client dinners must be approved by your manager in advance and are capped at 80 EUR per person.",
+                "Learning budget. Each employee has an annual learning budget of 1,500 EUR for courses, books, and conferences. Conference travel counts against the travel policy, not the learning budget. Unused learning budget does not roll over."
+            ]
+        },
+        {
+            "name": "security-guidelines.docx",
+            "pages": [
+                "Passwords and accounts. All company accounts must use the password manager 1Password and two-factor authentication with a hardware key or authenticator app. SMS-based two-factor authentication is not allowed. Never share credentials over chat or email.",
+                "Customer data. Customer data may only be stored in the production database in the EU region (Frankfurt). Exporting customer data to a personal device or spreadsheet is forbidden. Access to production requires a ticket approved by the on-call engineer and expires after 8 hours.",
+                "Incident reporting. Report suspected security incidents immediately in the #security-incidents Slack channel and page the on-call security engineer. Do not try to investigate a suspected breach on your own and do not delete any evidence. Lost or stolen laptops must be reported within one hour."
+            ]
+        },
+        {
+            "name": "product-faq.pdf",
+            "pages": [
+                "What is Nimbus Insights? Nimbus Insights is our analytics dashboard for e-commerce teams. It connects to Shopify, WooCommerce, and BigCommerce and shows revenue, conversion rate, and customer lifetime value in real time.",
+                "Pricing. The Starter plan costs 49 USD per month for up to 10,000 orders. The Growth plan costs 199 USD per month for up to 100,000 orders and adds cohort analysis and CSV exports. The Enterprise plan has custom pricing and includes single sign-on (SSO) and a dedicated success manager.",
+                "Data retention and trials. Order data is kept for 25 months on Starter and Growth plans and for 7 years on Enterprise. Every plan starts with a 14-day free trial; no credit card is required to start the trial."
+            ]
+        }
+    ],
+    "questions": [
+        {
+            "question": "How many vacation days do full-time employees get per year?",
+            "source": "employee-handbook.pdf",
+            "page": 2
+        },
+        {
+            "question": "Can I carry unused vacation days over to next year?",
+            "source": "employee-handbook.pdf",
+            "page": 2
+        },
+        {
+            "question": "When do I need a doctor's note when I'm sick?",
+            "source": "employee-handbook.pdf",
+            "page": 3
+        },
+        {
+            "question": "How long can I work from another country without approval?",
+            "source": "employee-handbook.pdf",
+            "page": 4
+        },
+        {
+            "question": "What is the budget for setting up my home office?",
+            "source": "employee-handbook.pdf",
+            "page": 5
+        },
+        {
+            "question": "What are the core working hours?",
+            "source": "employee-handbook.pdf",
+            "page": 1
+        },
+        {
+            "question": "Am I allowed to fly business class?",
+            "source": "expense-policy.pdf",
+            "page": 2
+        },
+        {
+            "question": "What is the maximum hotel cost per night in London?",
+            "source": "expense-policy.pdf",
+            "page": 2
+        },
+        {
+            "question": "How much is the daily meal allowance when travelling?",
+            "source": "expense-policy.pdf",
+            "page": 3
+        },
+        {
+            "question": "How much money do I get each year for courses and books?",
+            "source": "expense-policy.pdf",
+            "page": 4
+        },
+        {
+            "question": "Within how many days must expenses be submitted?",
+            "source": "expense-policy.pdf",
+            "page": 1
+        },
+        {
+            "question": "Is SMS two-factor authentication allowed?",
+            "source": "security-guidelines.docx",
+            "page": 1
+        },
+        {
+            "question": "Where is customer data allowed to be stored?",
+            "source": "security-guidelines.docx",
+            "page": 2
+        },
+        {
+            "question": "What should I do if my laptop is stolen?",
+            "source": "security-guidelines.docx",
+            "page": 3
+        },
+        {
+            "question": "How much does the Growth plan cost?",
+            "source": "product-faq.pdf",
+            "page": 2
+        },
+        {
+            "question": "Which plan includes single sign-on?",
+            "source": "product-faq.pdf",
+            "page": 2
+        },
+        {
+            "question": "Which e-commerce platforms does Nimbus Insights integrate with?",
+            "source": "product-faq.pdf",
+            "page": 1
+        },
+        {
+            "question": "How long is the free trial and do I need a credit card?",
+            "source": "product-faq.pdf",
+            "page": 3
+        },
+        { "question": "What is the parental leave policy?", "source": null, "page": null },
+        { "question": "Who won the 2022 football World Cup?", "source": null, "page": null },
+        {
+            "question": "What programming language is the backend written in?",
+            "source": null,
+            "page": null
+        }
+    ]
+}
